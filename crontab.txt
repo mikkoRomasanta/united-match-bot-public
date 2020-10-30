@@ -1,0 +1,1 @@
+1 */1 * * * /home/ubuntux/Desktop/pythonenv/bin/python /home/ubuntux/Desktop/python-proj/app_check.py >> /home/ubuntux/Desktop/python-proj/cronlogs.txt 2>&1
