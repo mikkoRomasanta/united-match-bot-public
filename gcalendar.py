@@ -44,27 +44,24 @@ def compare_time():
     next_match = get_next_match()
     next_match_time = next_match[2]
 
-    # print(next_match_time)
-    # print(current_time)
-
-    # # if current_time.day == next_match_time.day:
-    # #     if current_time.hour >= (
-    # #             next_match_time.hour - 2) and current_time.hour < next_match_time.hour - 1:
-    # #         return True
-    # #     else:
-    # #         return False
-    # # else:
-    # #     return False
-
-    test = 22
-    if current_time.day != next_match_time.day:
+    if current_time.day == next_match_time.day:  # check if 1 hour before hour of start time
         if current_time.hour >= (
-                test - 2) and current_time.hour < test - 1:
+                next_match_time.hour - 1) and current_time.hour < next_match_time.hour:
             return True
         else:
             return False
     else:
         return False
+
+    # test = 22
+    # if current_time.day != next_match_time.day:
+    #     if current_time.hour >= (
+    #             test - 1) and current_time.hour < test:
+    #         return True
+    #     else:
+    #         return False
+    # else:
+    #     return False
 
 
 def get_current_time():
