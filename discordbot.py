@@ -45,7 +45,7 @@ def await_message_gg():
             await message.channel.send(response)
 
 
-@tasks.loop(hours=1)
+@tasks.loop(minutes=30)
 async def next_match_ping():  # pings the role 1hr+ before the next match
     time_bool = gcalendar.compare_time()
     if time_bool == True:

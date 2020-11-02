@@ -13,7 +13,7 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 def get_next_match():
     now = get_current_time
-    # -12hours from current time due to some error w/gcalendar
+    # -12hours from current time due to some error w/gcalendar getting the wrong event
     now_minus = datetime.now() - timedelta(hours=12)
     now_formatted = now_minus.isoformat() + 'Z'
     credentials = pickle.load(
@@ -41,27 +41,34 @@ def get_next_match():
 
 def compare_time():
     current_time = get_current_time()
-    next_match = get_next_match()
-    next_match_time = next_match[2]
+    match = get_next_match()
+    match_time = match[2]
+    match_time = match_time.replace(tzinfo=None)
 
-    if current_time.day == next_match_time.day:  # check if 1 hour before hour of start time
-        if current_time.hour >= (
-                next_match_time.hour - 1) and current_time.hour < next_match_time.hour:
-            return True
-        else:
-            return False
+    # current_time = datetime(2020, 11, 4, 23, 30, 0)
+    # match_time = datetime(2020, 11, 5, 0, 30, 0)
+    difference = current_time - match_time
+    difference = difference.total_seconds()
+    # print(current_time)
+    # print(match_time)
+    # print(difference)
+
+    if difference >= -3601:
+        return True
     else:
         return False
 
-    # test = 22
-    # if current_time.day != next_match_time.day:
-    #     if current_time.hour >= (
-    #             test - 1) and current_time.hour < test:
-    #         return True
-    #     else:
-    #         return False
-    # else:
-    #     return False
+
+# def compare_time1():
+#     current_time = get_current_time()
+#     next_match = get_next_match()
+#     next_match_time = next_match[2]
+
+#     next_match_time2 = next_match_time.replace(tzinfo=None)
+
+#     difference = current_time - next_match_time2
+#     test = difference.total_seconds()
+#     return test
 
 
 def get_current_time():
@@ -70,10 +77,9 @@ def get_current_time():
 
 
 if __name__ == "__main__":
-    next_match = get_next_match()
-    print(next_match[0])
-    print(next_match[1])
-    # print('now', now)
-    test = compare_time()
-    # print(now_minus)
-    print(get_current_time())
+    # next_match = get_next_match()
+    # print(next_match[0])
+    # print(next_match[1])
+    # test = compare_time()
+    # print(test)
+    # print(get_current_time())
