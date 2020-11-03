@@ -12,7 +12,7 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 
 def get_next_match():
-    now = get_current_time
+    now = get_current_time()
     # -12hours from current time due to some error w/gcalendar getting the wrong event
     now_minus = datetime.now() - timedelta(hours=12)
     now_formatted = now_minus.isoformat() + 'Z'
@@ -80,6 +80,6 @@ if __name__ == "__main__":
     # next_match = get_next_match()
     # print(next_match[0])
     # print(next_match[1])
-    # test = compare_time()
-    # print(test)
+    test = compare_time()
+    print(test)
     # print(get_current_time())
