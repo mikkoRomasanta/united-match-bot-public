@@ -13,8 +13,10 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 def get_next_match():
     now = get_current_time()
-    # -12hours from current time due to some error w/gcalendar getting the wrong event
-    now_minus = datetime.now() - timedelta(hours=12)
+
+    # -6hours from current time due to some error w/gcalendar getting the wrong event
+    now_minus = now - timedelta(hours=6)
+
     now_formatted = now_minus.isoformat() + 'Z'
     credentials = pickle.load(
         open(file_token, "rb"))
@@ -36,7 +38,7 @@ def get_next_match():
     match_start_datetime = datetime.strptime(
         match_start, "%Y-%m-%dT%H:%M:%S%z")  # will be used for datetime comparison
 
-    return next_match_summary, next_match_time, match_start_datetime
+    return next_match_summary, next_match_time, match_start_datetime, now_formatted
 
 
 def compare_time():
@@ -45,15 +47,15 @@ def compare_time():
     match_time = match[2]
     match_time = match_time.replace(tzinfo=None)
 
-    # current_time = datetime(2020, 11, 4, 23, 30, 0)
+    # current_time = datetime(2020, 11, 7, 20, 30, 1)
     # match_time = datetime(2020, 11, 5, 0, 30, 0)
     difference = current_time - match_time
     difference = difference.total_seconds()
-    # print(current_time)
-    # print(match_time)
+    # print('current time:', current_time)
+    # print('match time: ', match_time)
     # print(difference)
 
-    if difference >= -3601:
+    if difference >= -3601 and difference <= 0:
         return True
     else:
         return False
@@ -76,10 +78,11 @@ def get_current_time():
     return now
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # next_match = get_next_match()
     # print(next_match[0])
     # print(next_match[1])
-    test = compare_time()
-    print(test)
+    # print('time formatted:', next_match[3])
+    # test = compare_time()
+    # print(test)
     # print(get_current_time())
