@@ -59,11 +59,12 @@ async def next_match_ping():  # pings the role 1hr+ before the next match
         channel = client.get_channel(CHANNEL_ID)
         await channel.send(f"<@&{ROLE_ID}> {message}")
         print('sent cron message')
-        try:
-            os.remove(file_status)
-        except BaseException:
-            exit('no status file found. exiting...')
-        exit('Done')
+        await asyncio.sleep(4000)
+        # try:
+        #     os.remove(file_status)
+        # except BaseException:
+        #     exit('no status file found. exiting...')
+        # exit('Done')
     print(time_bool)
 
 
