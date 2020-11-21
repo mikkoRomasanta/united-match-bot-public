@@ -18,6 +18,7 @@ if path.exists(file_status):  # check if status.txt exists
     try:  # check if PID on status.txt exists
         os.kill(pid, 0)
     except OSError:  # if not then create. #wasn't working on a separete function
+        os.remove(file_status)
         f = open(file_status, "w+")  # write the PID to status.txt
         f.write(str(pid))
         f.close()

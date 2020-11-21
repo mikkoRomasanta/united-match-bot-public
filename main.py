@@ -10,7 +10,7 @@ def main():
     discordbot.welcome()
     discordbot.await_message_gg()
     # discordbot.ping_role()
-    discordbot.run_client()
+    discordbot.run_bot()
 
 
 if __name__ == "__main__":

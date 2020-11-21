@@ -48,11 +48,11 @@ def compare_time():
     match_time = match_time.replace(tzinfo=None)
 
     # current_time = datetime(2020, 11, 8, 16, 50, 1)
-    match_time = datetime(2020, 11, 8, 18, 15, 0)
+    # match_time = datetime(2020, 11, 20, 21, 00, 0)
     difference = current_time - match_time
     difference = difference.total_seconds()
     # print('current time:', current_time)
-    # print('match time: ', match_time)
+    # print('match time: ', match[1])
     # print(difference)
 
     if difference >= -3601 and difference <= 0:
@@ -61,28 +61,10 @@ def compare_time():
         return False
 
 
-# def compare_time1():
-#     current_time = get_current_time()
-#     next_match = get_next_match()
-#     next_match_time = next_match[2]
-
-#     next_match_time2 = next_match_time.replace(tzinfo=None)
-
-#     difference = current_time - next_match_time2
-#     test = difference.total_seconds()
-#     return test
-
-
 def get_current_time():
     now = datetime.now()
     return now
 
 
 # if __name__ == "__main__":
-    # next_match = get_next_match()
-    # print(next_match[0])
-    # print(next_match[1])
-    # print('time formatted:', next_match[3])
-    # test = compare_time()
-    # print(test)
-    # print(get_current_time())
+#     compare_time()

@@ -11,5 +11,6 @@ pip3 install google-api-python-client
 pip3 install google_auth_oauthlib
 pip3 install -U discord.py
 pip3 install -U python-dotenv
+pip3 install pymysql
 
 /////////////////////END//////////////////////////////
