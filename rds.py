@@ -81,8 +81,8 @@ def prediction_enter(username, pred):
                 cur.execute(
                     sql,
                     (user[0],
-                        entry[1],
                         entry[0],
+                        entry[1],
                         prediction_status[2]))
                 db.commit()
                 response = f'Prediction entered. United: {entry[0]} | Score: Utd {entry[1]}'
@@ -104,11 +104,6 @@ def end_match(stat):
     cur.execute(sql)
     prediction_date = cur.fetchone()
 
-    # insert result to database
-    sql = ''' INSERT INTO prediction_results(result,date) values(%s,%s)'''
-    cur.execute(sql, (stat, prediction_date[2]))
-    db.commit()
-
     # check if tally is already done
     sql = '''SELECT * FROM prediction_results WHERE date = %s'''
     cur.execute(sql, prediction_date[2])
@@ -121,6 +116,12 @@ def end_match(stat):
     response = '----- POINTS AWARDED -----'
 
     if result_status is None:
+
+        # insert result to database
+        sql = ''' INSERT INTO prediction_results(result,date) values(%s,%s)'''
+        cur.execute(sql, (stat, prediction_date[2]))
+        db.commit()
+
         for row in entries:
             print(row)
             score = 0
@@ -159,5 +160,24 @@ def show_scores():  # show leaderboard. Limited to 5 for now
         return response
 
 
-if __name__ == "__main__":
-    show_scores()
+def show_predictions():
+    # get latest prediction status for the date
+    sql = '''SELECT * FROM prediction_status ORDER BY id DESC LIMIT 1'''
+    cur.execute(sql)
+    prediction_date = cur.fetchone()
+
+    sql = '''SELECT u.username, p.result_prediction, p.score_prediction
+    FROM prediction_entries p, users u
+    WHERE p.date = %s
+    AND p.user_id = u.id'''
+    cur.execute(sql, prediction_date[2])
+    result = cur.fetchall()
+    response = '----- LATEST PREDICTION ENTRIES -----'
+
+    if result is not None:
+        for row in result:
+            response += f'\n {row[0]} | {row[1]} | {row[2]}'
+    else:
+        response += '\nNo prediction entries available'
+
+    return response
