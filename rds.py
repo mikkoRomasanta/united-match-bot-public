@@ -12,10 +12,10 @@ HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
 
 db = pymysql.connect(HOST, USERNAME, PASSWORD, DB)
-cur = db.cursor()
 
 
 def prediction_time_start(match_time):
+    cur = db.cursor()
     sql = '''INSERT INTO prediction_status(status,date) values(1,%s)'''
 
     cur.execute(sql, match_time)
@@ -25,6 +25,7 @@ def prediction_time_start(match_time):
 
 
 def register_user(username):
+    cur = db.cursor()
     sql = '''INSERT INTO users(username,points) values(%s,100)'''
 
     try:
@@ -36,6 +37,7 @@ def register_user(username):
 
 
 def prediction_time_end():
+    cur = db.cursor()
     # get latest prediction
     sql = '''SELECT * FROM prediction_status ORDER BY id DESC LIMIT 1'''
     cur.execute(sql)
@@ -49,11 +51,11 @@ def prediction_time_end():
         response = '----- Prediction time ended! -----'
     else:
         response = 'Prediction time has already ended'
-
     return response
 
 
 def prediction_enter(username, pred):
+    cur = db.cursor()
     # split prediction
     entry = pred.split('/')
 
@@ -92,11 +94,11 @@ def prediction_enter(username, pred):
             response = 'Predictions are currently closed'
     else:
         response = 'You are not registered'
-
     return response
 
 
 def end_match(stat):
+    cur = db.cursor()
     result = stat.split('/')
 
     # get latest prediction status for the date
@@ -145,11 +147,12 @@ def end_match(stat):
                 response = 'No points awarded'
     else:
         response = 'Points were already tallied'
-
     return response
 
 
 def show_scores():  # show leaderboard. Limited to 5 for now
+    db.ping(reconnect=True)
+    cur = db.cursor()
     sql = '''SELECT * FROM users ORDER BY points DESC LIMIT 5'''
     cur.execute(sql)
     user = cur.fetchall()
@@ -161,6 +164,8 @@ def show_scores():  # show leaderboard. Limited to 5 for now
 
 
 def show_predictions():
+    db.ping(reconnect=True)
+    cur = db.cursor()
     # get latest prediction status for the date
     sql = '''SELECT * FROM prediction_status ORDER BY id DESC LIMIT 1'''
     cur.execute(sql)
@@ -179,5 +184,4 @@ def show_predictions():
             response += f'\n {row[0]} | {row[1]} | {row[2]}'
     else:
         response += '\nNo prediction entries available'
-
     return response

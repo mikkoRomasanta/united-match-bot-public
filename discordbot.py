@@ -2,8 +2,9 @@ import asyncio
 import os
 
 import discord
+# from discord.ext.commands import CommandNotFound
+from discord.errors import DiscordException
 from discord.ext import commands, tasks
-from discord.ext.commands import CommandNotFound
 from dotenv import load_dotenv
 
 import gcalendar
@@ -34,6 +35,12 @@ def await_commands():
     @bot.event
     async def on_command_error(ctx, error):
         if isinstance(error, CommandNotFound):
+            return
+        elif isinstance(error, MissingRequiredArgument):
+            return
+        elif isinstance(error, badArgument):
+            return
+        elif isinstance(error, TooManyArguments):
             return
         raise error
 
@@ -131,14 +138,14 @@ async def next_match_ping():  # pings the role 1hr+ before the next match
         await channel.send(f"<@&{ROLE_ID}> {message}")
         print('sent cron message')
 
-        await asyncio.sleep(3)
+        await asyncio.sleep(5)
 
         response = rds.prediction_time_start(match_time2)
         await channel.send(response)
 
         # wait before looping again. This is to make sure only 1
         # message is sent
-        await asyncio.sleep(4000)  # 4000
+        await asyncio.sleep(3660)  # 3660
     print(time_bool)
 
 

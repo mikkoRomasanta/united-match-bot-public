@@ -47,7 +47,7 @@ def compare_time():
     match_time = match[2]
     match_time = match_time.replace(tzinfo=None)
 
-    # current_time = datetime(2020, 11, 8, 16, 50, 1)
+    # current_time = datetime(2020, 12, 2, 22, 00, 0)
     # match_time = datetime(2020, 11, 25, 21, 00, 0)
     difference = current_time - match_time
     difference = difference.total_seconds()
